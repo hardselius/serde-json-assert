@@ -1,6 +1,6 @@
 use assert_json_diff::{
-    assert_json_eq, assert_json_include, assert_json_matches, assert_json_matches_no_panic,
-    CompareMode, Config, FloatCompareMode, NumericMode,
+    assert_json_contains, assert_json_eq, assert_json_include, assert_json_matches,
+    assert_json_matches_no_panic, CompareMode, Config, FloatCompareMode, NumericMode,
 };
 use serde::Serialize;
 use serde_json::json;
@@ -70,6 +70,54 @@ fn different_numeric_types_assume_float() {
 fn can_pass_with_exact_match() {
     assert_json_eq!(json!({ "a": { "b": true } }), json!({ "a": { "b": true } }));
     assert_json_eq!(json!({ "a": { "b": true } }), json!({ "a": { "b": true } }),);
+}
+
+#[test]
+fn can_pass_with_contains_match() {
+    // null contains null
+    assert_json_contains!(container: json!(null), contained: json!(null));
+    // numeric value contains numeric value
+    assert_json_contains!(container: json!(1), contained: json!(1));
+    // string contains string
+    assert_json_contains!(container: json!("a"), contained: json!("a"));
+    // object 1 contains identical object 2
+    assert_json_contains!(
+        container: json!({ "a": { "b": true } }),
+        contained: json!({ "a": { "b": true } })
+    );
+    // object 1 has more keys than object 2, but the keys on object 2 match the keys on object 1
+    assert_json_contains!(
+        container: json!({ "a": { "b": true }, "c": 1}),
+        contained: json!({ "a": { "b": true } })
+    );
+    // array 1 contains identical array 2
+    assert_json_contains!(container: json!([1, 2, 3]), contained: json!([1, 2, 3]));
+    // array 1 contains all items on array 2, even itens on array 2 being in different order than they are on array 1
+    assert_json_contains!(container: json!([1, 2, 3]), contained: json!([2, 3, 1]));
+    // array 1 contains more items than array 2, but items on array 2 match items on array 1 in the same order
+    assert_json_contains!(container: json!([1, 2, 3, 4]), contained: json!([1, 2, 3]));
+    // array 1 contains more items than array 2, but items on array 2 match items on array 1 in diferent order
+    assert_json_contains!(container: json!([1, 2, 3, 4]), contained: json!([2, 3, 1]));
+    // array 1 contains all items on array2 with the same amount of repeated items on both, in the same order
+    assert_json_contains!(
+        container: json!([1, 2, 3, 1, 4]),
+        contained: json!([1, 2, 3, 1, 4])
+    );
+    // array 1 contains all items on array2 with the same amount of repeated items on both, in different order
+    assert_json_contains!(
+        container: json!([1, 2, 3, 1, 4]),
+        contained: json!([3, 1, 2, 1, 4])
+    );
+    // array 1 contains more items than array 2, but items on aray 2 match items on array 1 with repeated items on both in the same order
+    assert_json_contains!(
+        container: json!([1, 2, 3, 1, 4]),
+        contained: json!([1, 2, 3, 1])
+    );
+    // array 1 contains more items than array 2, but items on array 2 match items on array 1 with repeated items on both in different order
+    assert_json_contains!(
+        container: json!([1, 2, 3, 1, 4]),
+        contained: json!([2, 1, 3, 1])
+    );
 }
 
 #[test]
@@ -184,13 +232,14 @@ fn can_pass_with_exact_float_comparison() {
         height: 1.79,
     };
 
+    let config = Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Exact);
     assert_json_matches!(
         &json!({
             "name": "bob",
             "height": 1.79
         }),
         &person,
-        Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Exact)
+        &config,
     );
 }
 
@@ -201,6 +250,7 @@ fn can_fail_with_exact_float_comparison() {
         name: "bob".to_string(),
         height: 1.79,
     };
+    let config = Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Exact);
 
     assert_json_matches!(
         &json!({
@@ -208,7 +258,7 @@ fn can_fail_with_exact_float_comparison() {
             "height": 1.7900001
         }),
         &person,
-        Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Exact)
+        &config
     );
 }
 
@@ -218,6 +268,8 @@ fn can_pass_with_epsilon_based_float_comparison() {
         name: "bob".to_string(),
         height: 1.79,
     };
+    let config =
+        Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Epsilon(0.00001));
 
     assert_json_matches!(
         &json!({
@@ -225,7 +277,7 @@ fn can_pass_with_epsilon_based_float_comparison() {
             "height": 1.7900001
         }),
         &person,
-        Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Epsilon(0.00001))
+        &config
     );
 }
 
@@ -236,6 +288,8 @@ fn can_fail_with_epsilon_based_float_comparison() {
         name: "bob".to_string(),
         height: 1.79,
     };
+    let config =
+        Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Epsilon(0.00001));
 
     assert_json_matches!(
         &json!({
@@ -243,6 +297,6 @@ fn can_fail_with_epsilon_based_float_comparison() {
             "height": 1.7901
         }),
         &person,
-        Config::new(CompareMode::Strict).float_compare_mode(FloatCompareMode::Epsilon(0.00001))
+        &config
     );
 }

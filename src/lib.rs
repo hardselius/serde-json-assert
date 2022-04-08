@@ -158,6 +158,18 @@ use serde::Serialize;
 mod core_ext;
 mod diff;
 
+/// Assert that a JSON value contains other JSON value
+///
+/// See [crate documentation](index.html) for examples.
+#[macro_export]
+macro_rules! assert_json_contains {
+    (container: $container:expr, contained: $contained:expr $(,)?) => {{
+        let config =
+            $crate::Config::new($crate::CompareMode::Inclusive).consider_array_sorting(false);
+        $crate::assert_json_matches!($container, $contained, &config)
+    }};
+}
+
 /// Compare two JSON values for an inclusive match.
 ///
 /// It allows `actual` to contain additional data. If you want an exact match use
@@ -301,6 +313,7 @@ where
 #[derive(Debug, Clone, PartialEq)]
 #[allow(missing_copy_implementations)]
 pub struct Config {
+    pub(crate) array_sorting_mode: ArraySortingMode,
     pub(crate) compare_mode: CompareMode,
     pub(crate) numeric_mode: NumericMode,
     float_compare_mode: FloatCompareMode,
@@ -312,6 +325,7 @@ impl Config {
     /// The default `numeric_mode` is be [`NumericMode::Strict`].
     pub fn new(compare_mode: CompareMode) -> Self {
         Self {
+            array_sorting_mode: ArraySortingMode::Consider,
             compare_mode,
             numeric_mode: NumericMode::Strict,
             float_compare_mode: FloatCompareMode::Exact,
@@ -339,6 +353,19 @@ impl Config {
         self.float_compare_mode = float_compare_mode;
         self
     }
+
+    /// configure array sorting mode
+    pub fn consider_array_sorting(mut self, consider: bool) -> Self {
+        if consider {
+            if self.compare_mode == CompareMode::Strict {
+                panic!("strict comparison does not allow array ordering to be ignored");
+            }
+            self.array_sorting_mode = ArraySortingMode::Consider;
+        } else {
+            self.array_sorting_mode = ArraySortingMode::Ignore;
+        }
+        self
+    }
 }
 
 /// Mode for how JSON values should be compared.
@@ -353,6 +380,15 @@ pub enum CompareMode {
     ///
     /// The mode used with [`assert_json_eq`].
     Strict,
+}
+
+/// Should array sorting be taken in consideration
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+enum ArraySortingMode {
+    ///consider
+    Consider,
+    /// ignore
+    Ignore,
 }
 
 /// How should numbers be compared.
