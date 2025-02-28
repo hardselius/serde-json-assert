@@ -1,10 +1,14 @@
-[![Crates.io](https://img.shields.io/crates/v/assert-json-diff.svg)](https://crates.io/crates/assert-json-diff)
-[![Docs](https://docs.rs/assert-json-diff/badge.svg)](https://docs.rs/assert-json-diff)
-[![dependency status](https://deps.rs/repo/github/davidpdrsn/assert-json-diff/status.svg)](https://deps.rs/repo/github/davidpdrsn/assert-json-diff)
-[![Build status](https://github.com/davidpdrsn/assert-json-diff/workflows/CI/badge.svg)](https://github.com/davidpdrsn/assert-json-diff/actions)
+[![Crates.io](https://img.shields.io/crates/v/serde-json-assert.svg)](https://crates.io/crates/serde-json-assert)
+[![Docs](https://docs.rs/serde-json-assert/badge.svg)](https://docs.rs/serde-json-assert)
+[![dependency status](https://deps.rs/repo/github/hardselius/serde-json-assert/status.svg)](https://deps.rs/repo/github/hardselius/serde-json-assert)
+[![Build status](https://github.com/hardselius/serde-json-assert/workflows/CI/badge.svg)](https://github.com/hardselius/serde-json-assert/actions)
 ![maintenance-status](https://img.shields.io/badge/maintenance-passively--maintained-yellowgreen.svg)
 
-# assert-json-diff
+# serde-json-assert
+
+This crate is a fork of [davidpederson/assert-json-diff][assert-json-diff]. It
+expands on the functionality to provide an even more flexible tool for JSON
+testing.
 
 This crate includes macros for comparing two serializable values by diffing their JSON
 representations. It is designed to give much more helpful error messages than the standard
@@ -13,6 +17,7 @@ differences. This is useful when asserting that two large JSON objects are the s
 
 It uses the [serde] and [serde_json] to perform the serialization.
 
+[assert-json-diff]: https://github.com/davidpdrsn/assert-json-diff
 [serde]: https://crates.io/crates/serde
 [serde_json]: https://crates.io/crates/serde_json
 [`assert_eq!`]: https://doc.rust-lang.org/std/macro.assert_eq.html
@@ -83,8 +88,9 @@ json atoms at path ".data.users[1].id" are not equal:
         24
 ```
 
-[`assert_json_include`](macro.assert_json_include.html) allows extra data in `actual` but not in `expected`. That is so you can verify just a part
-of the JSON without having to specify the whole thing. For example this test passes:
+[`assert_json_include`](macro.assert_json_include.html) allows extra data in
+`actual` but not in `expected`. That is so you can verify just a part of the
+JSON without having to specify the whole thing. For example this test passes:
 
 ```rust
 use assert_json_diff::assert_json_include;
@@ -124,7 +130,8 @@ json atom at path ".a.b" is missing from actual
 
 ### Exact matching
 
-If you want to ensure two JSON values are *exactly* the same, use [`assert_json_eq`](macro.assert_json_eq.html).
+If you want to ensure two JSON values are *exactly* the same, use
+[`assert_json_eq`](macro.assert_json_eq.html).
 
 ```rust
 use assert_json_diff::assert_json_eq;
@@ -146,4 +153,9 @@ json atom at path ".a.b" is missing from lhs
 
 You can use [`assert_json_matches`] to further customize the comparison.
 
-License: MIT
+### License
+
+This contribution is dual licensed under EITHER OF
+
+* Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
+* MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
