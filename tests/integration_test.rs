@@ -1,9 +1,9 @@
-use assert_json_diff::{
+use serde::Serialize;
+use serde_json::json;
+use serde_json_assert::{
     assert_json_contains, assert_json_eq, assert_json_include, assert_json_matches,
     assert_json_matches_no_panic, CompareMode, Config, FloatCompareMode, NumericMode,
 };
-use serde::Serialize;
-use serde_json::json;
 
 #[test]
 fn can_pass() {

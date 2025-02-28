@@ -1,16 +1,19 @@
 [package]
-version = "2.0.2"
-authors = ["David Pedersen <david.pdrsn@gmail.com>"]
-categories = ["development-tools"]
-description = "Easily compare two JSON values and get great output"
-homepage = "https://github.com/davidpdrsn/assert-json-diff"
-keywords = ["serde_json", "json", "testing"]
-license = "MIT"
-name = "assert-json-diff"
-readme = "README.md"
-repository = "https://github.com/davidpdrsn/assert-json-diff.git"
-documentation = "https://docs.rs/assert-json-diff"
+name = "serde-json-assert"
+version = "0.1.0"
 edition = "2021"
+authors = [
+    "David Pedersen <david.pdrsn@gmail.com>",
+    "Martin Hardselius <martin@hardselius.dev>",
+]
+license = "MIT OR Apache-2.0"
+description = "Flexible JSON assertions"
+homepage = "https://github.com/hardselius/serde-json-assert"
+repository = "https://github.com/hardselius/serde-json-assert"
+categories = ["development-tools"]
+keywords = ["serde_json", "json", "testing"]
+documentation = "https://docs.rs/serde-json-assert"
+readme = "README.md"
 
 [dependencies]
 serde_json = "1"
@@ -22,4 +25,4 @@ version-sync = "0.9"
 serde = { version = "1", features = ["derive"] }
 
 [badges]
-maintenance = { status = "passively-maintained" }
+maintenance = { status = "maintained" }

@@ -15,7 +15,7 @@
 //! [`assert_json_include`](macro.assert_json_include.html):
 //!
 //! ```should_panic
-//! use assert_json_diff::assert_json_include;
+//! use serde_json_assert::assert_json_include;
 //! use serde_json::json;
 //!
 //! let a = json!({
@@ -79,7 +79,7 @@
 //! of the JSON without having to specify the whole thing. For example this test passes:
 //!
 //! ```
-//! use assert_json_diff::assert_json_include;
+//! use serde_json_assert::assert_json_include;
 //! use serde_json::json;
 //!
 //! assert_json_include!(
@@ -95,7 +95,7 @@
 //! However `expected` cannot contain additional data so this test fails:
 //!
 //! ```should_panic
-//! use assert_json_diff::assert_json_include;
+//! use serde_json_assert::assert_json_include;
 //! use serde_json::json;
 //!
 //! assert_json_include!(
@@ -119,7 +119,7 @@
 //! If you want to ensure two JSON values are *exactly* the same, use [`assert_json_eq`](macro.assert_json_eq.html).
 //!
 //! ```rust,should_panic
-//! use assert_json_diff::assert_json_eq;
+//! use serde_json_assert::assert_json_eq;
 //! use serde_json::json;
 //!
 //! assert_json_eq!(
@@ -203,7 +203,7 @@ macro_rules! assert_json_eq {
 /// Compare two JSON values according to a configuration.
 ///
 /// ```
-/// use assert_json_diff::{
+/// use serde_json_assert::{
 ///     CompareMode,
 ///     Config,
 ///     NumericMode,
@@ -228,7 +228,7 @@ macro_rules! assert_json_eq {
 /// `expected`. Example:
 ///
 /// ```
-/// # use assert_json_diff::{
+/// # use serde_json_assert::{
 /// #     CompareMode,
 /// #     Config,
 /// #     NumericMode,

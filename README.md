@@ -2,7 +2,7 @@
 [![Docs](https://docs.rs/serde-json-assert/badge.svg)](https://docs.rs/serde-json-assert)
 [![dependency status](https://deps.rs/repo/github/hardselius/serde-json-assert/status.svg)](https://deps.rs/repo/github/hardselius/serde-json-assert)
 [![Build status](https://github.com/hardselius/serde-json-assert/workflows/CI/badge.svg)](https://github.com/hardselius/serde-json-assert/actions)
-![maintenance-status](https://img.shields.io/badge/maintenance-passively--maintained-yellowgreen.svg)
+![maintenance-status](https://img.shields.io/badge/maintenance-maintained-green.svg)
 
 # serde-json-assert
 
@@ -28,7 +28,7 @@ If you want to assert that one JSON value is "included" in another use
 [`assert_json_include`](macro.assert_json_include.html):
 
 ```rust
-use assert_json_diff::assert_json_include;
+use serde_json_assert::assert_json_include;
 use serde_json::json;
 
 let a = json!({
@@ -93,7 +93,7 @@ json atoms at path ".data.users[1].id" are not equal:
 JSON without having to specify the whole thing. For example this test passes:
 
 ```rust
-use assert_json_diff::assert_json_include;
+use serde_json_assert::assert_json_include;
 use serde_json::json;
 
 assert_json_include!(
@@ -109,7 +109,7 @@ assert_json_include!(
 However `expected` cannot contain additional data so this test fails:
 
 ```rust
-use assert_json_diff::assert_json_include;
+use serde_json_assert::assert_json_include;
 use serde_json::json;
 
 assert_json_include!(
@@ -134,7 +134,7 @@ If you want to ensure two JSON values are *exactly* the same, use
 [`assert_json_eq`](macro.assert_json_eq.html).
 
 ```rust
-use assert_json_diff::assert_json_eq;
+use serde_json_assert::assert_json_eq;
 use serde_json::json;
 
 assert_json_eq!(
