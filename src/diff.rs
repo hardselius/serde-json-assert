@@ -101,17 +101,17 @@ impl<'a> DiffFolder<'a, '_> {
                 // research number of repeated items in rhs for this item
                 let rhs_item_count = rhs
                     .iter()
-                    .filter(|i| diff(rhs_item, i, self.config).len() == 0)
+                    .filter(|i| diff(rhs_item, i, self.config).is_empty())
                     .count();
                 // now, make sure that lhs has at least as many items matching this item
                 let lhs_matching_items_count = lhs_array
                     .iter()
-                    .filter(|lhs_item| diff(rhs_item, lhs_item, self.config).len() == 0)
+                    .filter(|lhs_item| diff(rhs_item, lhs_item, self.config).is_empty())
                     .count();
                 if lhs_matching_items_count < rhs_item_count {
                     self.acc.push(Difference {
                         lhs: Some(lhs),
-                        rhs: Some(&self.rhs),
+                        rhs: Some(self.rhs),
                         path: self.path.clone(),
                         config: self.config.clone(),
                     });
@@ -121,7 +121,7 @@ impl<'a> DiffFolder<'a, '_> {
         } else {
             self.acc.push(Difference {
                 lhs: Some(lhs),
-                rhs: Some(&self.rhs),
+                rhs: Some(self.rhs),
                 path: self.path.clone(),
                 config: self.config.clone(),
             });
