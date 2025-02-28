@@ -7,15 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2025-02-28
+## [0.2.0] - 2025-02-28
 
 ### Added
 
-- Initial release after fork of https://github.com/davidpdrsn/assert-json-diff
 - Float compare mode, by @JonathanMurray
   ([patch](https://github.com/JonathanMurray/assert-json-diff/tree/379b3548c086867cf538ddb77407714a35ee63b1)).
 - `assert_json_contains` implementation by @marlon-sousa (and @briankung)
   ([patch](https://github.com/briankung/assert-json-diff/tree/da9af96806e16860c15ff002cf813b021d3bdb8a)).
 
-[unreleased]: https://github.com/hardselius/serde-json-assert/compare/v0.1.0...HEAD
+## [0.1.0] - 2025-02-28
+
+### Added
+
+- Initial release after fork of https://github.com/davidpdrsn/assert-json-diff
+
+[unreleased]: https://github.com/hardselius/serde-json-assert/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/hardselius/serde-json-assert/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/hardselius/serde-json-assert/releases/tag/0.1.0
