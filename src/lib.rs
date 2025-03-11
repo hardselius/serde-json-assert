@@ -371,8 +371,8 @@ impl Config {
 /// Mode for how JSON values should be compared.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum CompareMode {
-    /// The two JSON values don't have to be exactly equal. The "actual" value is only required to
-    /// be "contained" inside "expected". See [crate documentation](index.html) for examples.
+    /// The two JSON values don't have to be exactly equal. The "expected" value is only required to
+    /// be "contained" inside "actual". See [crate documentation](index.html) for examples.
     ///
     /// The mode used with [`assert_json_include`].
     Inclusive,

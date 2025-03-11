@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Strict comparisons with ignored sorting order no longer allows different
+  number of elements in arrays.
+- Inclusive comparisons with ignored sorting order fixed. The "expected" and
+  "actual" arguments were flipped.
+
 ## [0.2.0] - 2025-02-28
 
 ### Added

@@ -97,16 +97,31 @@ impl<'a> DiffFolder<'a, '_> {
         if let Some(rhs) = self.rhs.as_array() {
             let lhs_array = lhs.as_array().unwrap();
 
+            let lhs_len = lhs_array.len();
+            let rhs_len = rhs.len();
+
+            if self.config.compare_mode == CompareMode::Strict && lhs_len != rhs_len {
+                self.acc.push(Difference {
+                    lhs: Some(lhs),
+                    rhs: Some(self.rhs),
+                    path: self.path.clone(),
+                    config: self.config.clone(),
+                });
+                return;
+            }
+
             for rhs_item in rhs.iter() {
-                // research number of repeated items in rhs for this item
+                // For each rhs item (expected) count the number of times it matches with the rhs
+                // (expected) array.
                 let rhs_item_count = rhs
                     .iter()
                     .filter(|i| diff(rhs_item, i, self.config).is_empty())
                     .count();
-                // now, make sure that lhs has at least as many items matching this item
+                // Make sure that lhs (actual) has at least as many items matching the rhs
+                // (expected) item.
                 let lhs_matching_items_count = lhs_array
                     .iter()
-                    .filter(|lhs_item| diff(rhs_item, lhs_item, self.config).is_empty())
+                    .filter(|lhs_item| diff(lhs_item, rhs_item, self.config).is_empty())
                     .count();
                 if lhs_matching_items_count < rhs_item_count {
                     self.acc.push(Difference {

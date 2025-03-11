@@ -300,3 +300,67 @@ fn can_fail_with_epsilon_based_float_comparison() {
         &config
     );
 }
+
+#[test]
+fn ignore_array_sorting_with_inclusive_comparisons() {
+    let actual = json!([
+        {
+            "a": 1,
+            "b": true,
+            "c": "foo"
+        },
+        {
+            "a": 2,
+            "b": false,
+            "c": "bar"
+        },
+        {
+            "a": 3,
+            "b": false,
+            "c": "baz"
+        }
+    ]);
+    let expected = json!([
+        {
+            "b": false,
+            "c": "bar"
+        },
+        {
+            "b": true,
+            "c": "foo"
+        }
+    ]);
+    let config = Config::new(CompareMode::Inclusive).consider_array_sorting(false);
+    assert_json_matches!(&actual, &expected, &config);
+}
+
+#[test]
+#[should_panic]
+fn can_fail_ignore_array_sorting_with_strict_comparisons() {
+    let actual = json!([
+        {
+            "b": true,
+            "c": "foo"
+        },
+        {
+            "b": false,
+            "c": "bar"
+        },
+        {
+            "b": false,
+            "c": "baz"
+        }
+    ]);
+    let expected = json!([
+        {
+            "b": false,
+            "c": "bar"
+        },
+        {
+            "b": true,
+            "c": "foo"
+        }
+    ]);
+    let config = Config::new(CompareMode::Strict).consider_array_sorting(false);
+    assert_json_matches!(&actual, &expected, &config);
+}
