@@ -17,11 +17,6 @@ differences. This is useful when asserting that two large JSON objects are the s
 
 It uses the [serde] and [serde_json] to perform the serialization.
 
-[assert-json-diff]: https://github.com/davidpdrsn/assert-json-diff
-[serde]: https://crates.io/crates/serde
-[serde_json]: https://crates.io/crates/serde_json
-[`assert_eq!`]: https://doc.rust-lang.org/std/macro.assert_eq.html
-
 ### Partial matching
 
 If you want to assert that one JSON value is "included" in another use
@@ -159,3 +154,11 @@ This contribution is dual licensed under EITHER OF
 
 * Apache License, Version 2.0, ([LICENSE-APACHE](LICENSE-APACHE) or <http://www.apache.org/licenses/LICENSE-2.0>)
 * MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
+
+in addition to the [original license](LICENSE) of the
+[assert-json-diff][assert-json-diff] crate.
+
+[assert-json-diff]: https://github.com/davidpdrsn/assert-json-diff
+[serde]: https://crates.io/crates/serde
+[serde_json]: https://crates.io/crates/serde_json
+[`assert_eq!`]: https://doc.rust-lang.org/std/macro.assert_eq.html
