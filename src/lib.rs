@@ -155,6 +155,8 @@
 use diff::diff;
 use serde::Serialize;
 
+use crate::diff::Difference;
+
 mod core_ext;
 mod diff;
 
@@ -306,6 +308,69 @@ where
             .collect::<Vec<_>>()
             .join("\n\n");
         Err(msg)
+    }
+}
+
+/// Compares two JSON values without panicking.
+///
+/// Returns a `Result` containing either `Ok(())` if the values match,
+/// or an `Err` with a [`Vec<DifferenceBuf>`](DifferenceBuf) describing the differences.
+///
+/// # Note:
+///
+/// This function performs some cloning and may be less efficient.
+///
+/// If you only need a string error message, use [`assert_json_matches_no_panic`] or the assertion macros.
+///
+/// # Examples
+///
+/// ```
+/// use serde_json_assert::{try_assert_json_matches, Config, CompareMode};
+/// use serde_json::json;
+///
+/// let lhs = json!({ "a": 1, "b": 2 });
+/// let rhs = json!({ "a": 1 });
+/// let config = Config::new(CompareMode::Inclusive);
+///
+/// let result = try_assert_json_matches(&lhs, &rhs, &config);
+/// assert!(result.is_ok());
+///
+/// let lhs = json!({ "a": 1 });
+/// let rhs = json!({ "a": 2 });
+/// let config = Config::new(CompareMode::Strict);
+///
+/// let result = try_assert_json_matches(&lhs, &rhs, &config);
+/// assert!(result.is_err());
+/// ```
+pub fn try_assert_json_matches<Lhs, Rhs>(
+    lhs: &Lhs,
+    rhs: &Rhs,
+    config: &Config,
+) -> Result<(), Vec<Difference>>
+where
+    Lhs: Serialize,
+    Rhs: Serialize,
+{
+    let lhs = serde_json::to_value(lhs).unwrap_or_else(|err| {
+        panic!(
+            "Couldn't convert left hand side value to JSON. Serde error: {}",
+            err
+        )
+    });
+    let rhs = serde_json::to_value(rhs).unwrap_or_else(|err| {
+        panic!(
+            "Couldn't convert right hand side value to JSON. Serde error: {}",
+            err
+        )
+    });
+
+    let diffs = diff(&lhs, &rhs, config);
+    let diffs_buf: Vec<Difference> = diffs.into_iter().map(|d| d.into()).collect();
+
+    if diffs_buf.is_empty() {
+        Ok(())
+    } else {
+        Err(diffs_buf)
     }
 }
 
