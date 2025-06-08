@@ -1,6 +1,6 @@
 use crate::core_ext::{Indent, Indexes};
 use crate::{ArraySortingMode, CompareMode, Config, FloatCompareMode, NumericMode};
-use float_cmp::{ApproxEq, F64Margin};
+use float_cmp::{ApproxEq, F64Margin, FloatMargin};
 use serde_json::Value;
 use std::{collections::HashSet, fmt};
 
