@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Expose the types `Difference`, `Path` and `Key`.
+- New function `try_assert_json_matches()` which returns a `Vec<Difference>` instead of a error message, allow user to do further processing. 
+
 ## [0.2.1] - 2025-03-11
 
 ### Fixed
