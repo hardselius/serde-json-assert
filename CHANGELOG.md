@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- The types `Difference`, `Path` and `Key` are now properly exposed in the
+  public API.
+- Fixed documentation of `try_assert_json_matches()`.
+
 ## [0.3.0] - 2025-06-08
 
 ### Added

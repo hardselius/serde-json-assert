@@ -155,7 +155,7 @@
 use diff::diff;
 use serde::Serialize;
 
-use crate::diff::Difference;
+pub use crate::diff::{Difference, Key, Path};
 
 mod core_ext;
 mod diff;
@@ -314,7 +314,7 @@ where
 /// Compares two JSON values without panicking.
 ///
 /// Returns a `Result` containing either `Ok(())` if the values match,
-/// or an `Err` with a [`Vec<DifferenceBuf>`](DifferenceBuf) describing the differences.
+/// or an `Err` with a [`Vec<Difference>`](Difference) describing the differences.
 ///
 /// # Note:
 ///

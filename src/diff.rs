@@ -291,6 +291,28 @@ pub struct Difference {
     config: Config,
 }
 
+impl Difference {
+    /// Returns the path to the difference.
+    pub fn path(&self) -> &Path {
+        &self.path
+    }
+
+    /// Get the left-hand side, or "actual", value of the difference.
+    pub fn actual(&self) -> &Option<Value> {
+        &self.lhs
+    }
+
+    /// Get the right-hand side, or "expected", value of the difference.
+    pub fn expected(&self) -> &Option<Value> {
+        &self.rhs
+    }
+
+    /// Returns the configuration used to generate this difference.
+    pub fn config(&self) -> &Config {
+        &self.config
+    }
+}
+
 impl<'a> From<DifferenceRef<'a>> for Difference {
     fn from(diff: DifferenceRef<'a>) -> Self {
         Difference {
@@ -356,8 +378,10 @@ impl fmt::Display for DifferenceRef<'_> {
 
 /// Represents a path to a JSON value in a tree structure.
 #[derive(Debug, Clone, PartialEq)]
-enum Path {
+pub enum Path {
+    /// The root of the JSON tree.
     Root,
+    /// A path to a JSON object or array.
     Keys(Vec<Key>),
 }
 
@@ -405,8 +429,10 @@ impl fmt::Display for PathRef<'_> {
 
 /// Represents a key in a JSON object or an index in a JSON array.
 #[derive(Debug, Clone, PartialEq, Eq)]
-enum Key {
+pub enum Key {
+    /// An index in a JSON array.
     Idx(usize),
+    /// A field in a JSON object.
     Field(String),
 }
 
