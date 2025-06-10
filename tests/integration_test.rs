@@ -371,3 +371,81 @@ fn can_fail_ignore_array_sorting_with_strict_comparisons() {
     let config = Config::new(CompareMode::Strict).consider_array_sorting(false);
     assert_json_matches!(&actual, &expected, &config);
 }
+
+#[test]
+fn assert_json_contains_can_fail_with_message() {
+    let result = std::panic::catch_unwind(|| {
+        assert_json_contains!(
+            container: json!({ "a": { "b": true } }),
+            contained: json!({ "a": { "b": false } }),
+            "The {} assert failed because of {}",
+            "'contains'",
+            "'reasons'"
+        );
+    });
+
+    assert!(result.is_err());
+
+    let error = result.unwrap_err();
+    let msg = error.downcast_ref::<String>().unwrap();
+    assert!(msg.contains("The 'contains' assert failed because of 'reasons'"));
+}
+
+#[test]
+fn assert_json_include_can_fail_with_message() {
+    let result = std::panic::catch_unwind(|| {
+        assert_json_include!(
+            actual: json!({ "a": { "b": true } }),
+            expected: json!({ "a": { "b": false } }),
+            "The {} assert failed because of {}",
+            "'include'",
+            "'reasons'"
+        );
+    });
+
+    assert!(result.is_err());
+
+    let error = result.unwrap_err();
+    let msg = error.downcast_ref::<String>().unwrap();
+    assert!(msg.contains("The 'include' assert failed because of 'reasons'"));
+}
+
+#[test]
+fn assert_json_eq_can_fail_with_message() {
+    let result = std::panic::catch_unwind(|| {
+        assert_json_eq!(
+            json!({ "a": { "b": true } }),
+            json!({ "a": { "b": false } }),
+            "The {} assert failed because of {}",
+            "'eq'",
+            "'reasons'"
+        );
+    });
+
+    assert!(result.is_err());
+
+    let error = result.unwrap_err();
+    let msg = error.downcast_ref::<String>().unwrap();
+    assert!(msg.contains("The 'eq' assert failed because of 'reasons'"));
+}
+
+#[test]
+fn assert_json_matches_can_fail_with_message() {
+    let config = Config::new(CompareMode::Strict).consider_array_sorting(false);
+    let result = std::panic::catch_unwind(|| {
+        assert_json_matches!(
+            json!({ "a": { "b": true } }),
+            json!({ "a": { "b": false } }),
+            &config,
+            "The {} assert failed because of {}",
+            "'matches'",
+            "'reasons'"
+        );
+    });
+
+    assert!(result.is_err());
+
+    let error = result.unwrap_err();
+    let msg = error.downcast_ref::<String>().unwrap();
+    assert!(msg.contains("The 'matches' assert failed because of 'reasons'"));
+}
