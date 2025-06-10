@@ -92,28 +92,35 @@ fn can_pass_with_contains_match() {
     );
     // array 1 contains identical array 2
     assert_json_contains!(container: json!([1, 2, 3]), contained: json!([1, 2, 3]));
-    // array 1 contains all items on array 2, even itens on array 2 being in different order than they are on array 1
+    // array 1 contains all items on array 2, even itens on array 2 being in different order than
+    // they are on array 1
     assert_json_contains!(container: json!([1, 2, 3]), contained: json!([2, 3, 1]));
-    // array 1 contains more items than array 2, but items on array 2 match items on array 1 in the same order
+    // array 1 contains more items than array 2, but items on array 2 match items on array 1 in the
+    // same order
     assert_json_contains!(container: json!([1, 2, 3, 4]), contained: json!([1, 2, 3]));
-    // array 1 contains more items than array 2, but items on array 2 match items on array 1 in diferent order
+    // array 1 contains more items than array 2, but items on array 2 match items on array 1 in
+    // diferent order
     assert_json_contains!(container: json!([1, 2, 3, 4]), contained: json!([2, 3, 1]));
-    // array 1 contains all items on array2 with the same amount of repeated items on both, in the same order
+    // array 1 contains all items on array2 with the same amount of repeated items on both, in the
+    // same order
     assert_json_contains!(
         container: json!([1, 2, 3, 1, 4]),
         contained: json!([1, 2, 3, 1, 4])
     );
-    // array 1 contains all items on array2 with the same amount of repeated items on both, in different order
+    // array 1 contains all items on array2 with the same amount of repeated items on both, in
+    // different order
     assert_json_contains!(
         container: json!([1, 2, 3, 1, 4]),
         contained: json!([3, 1, 2, 1, 4])
     );
-    // array 1 contains more items than array 2, but items on aray 2 match items on array 1 with repeated items on both in the same order
+    // array 1 contains more items than array 2, but items on aray 2 match items on array 1 with
+    // repeated items on both in the same order
     assert_json_contains!(
         container: json!([1, 2, 3, 1, 4]),
         contained: json!([1, 2, 3, 1])
     );
-    // array 1 contains more items than array 2, but items on array 2 match items on array 1 with repeated items on both in different order
+    // array 1 contains more items than array 2, but items on array 2 match items on array 1 with
+    // repeated items on both in different order
     assert_json_contains!(
         container: json!([1, 2, 3, 1, 4]),
         contained: json!([2, 1, 3, 1])

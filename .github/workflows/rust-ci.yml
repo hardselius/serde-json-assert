@@ -21,7 +21,7 @@ jobs:
       - name: check rustfmt
         run: |
           rustup component add rustfmt
-          cargo fmt -- --check --color always
+          cargo fmt -- --check --color always --config comment_width=100 --config wrap_comments=true
 
       # run clippy to verify we have no warnings
       - run: cargo fetch

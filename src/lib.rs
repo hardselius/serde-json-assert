@@ -75,8 +75,9 @@
 //!         24
 //! ```
 //!
-//! [`assert_json_include`](macro.assert_json_include.html) allows extra data in `actual` but not in `expected`. That is so you can verify just a part
-//! of the JSON without having to specify the whole thing. For example this test passes:
+//! [`assert_json_include`](macro.assert_json_include.html) allows extra data in `actual` but not in
+//! `expected`. That is so you can verify just a part of the JSON without having to specify the
+//! whole thing. For example this test passes:
 //!
 //! ```
 //! use serde_json_assert::assert_json_include;
@@ -116,7 +117,8 @@
 //!
 //! ## Exact matching
 //!
-//! If you want to ensure two JSON values are *exactly* the same, use [`assert_json_eq`](macro.assert_json_eq.html).
+//! If you want to ensure two JSON values are *exactly* the same, use
+//! [`assert_json_eq`](macro.assert_json_eq.html).
 //!
 //! ```rust,should_panic
 //! use serde_json_assert::assert_json_eq;
@@ -191,7 +193,8 @@ macro_rules! assert_json_include {
 
 /// Compare two JSON values for an exact match.
 ///
-/// If you want an inclusive match use [`assert_json_include`](macro.assert_json_include.html) instead.
+/// If you want an inclusive match use [`assert_json_include`](macro.assert_json_include.html)
+/// instead.
 ///
 /// See [crate documentation](index.html) for examples.
 #[macro_export]
@@ -320,7 +323,8 @@ where
 ///
 /// This function performs some cloning and may be less efficient.
 ///
-/// If you only need a string error message, use [`assert_json_matches_no_panic`] or the assertion macros.
+/// If you only need a string error message, use [`assert_json_matches_no_panic`] or the assertion
+/// macros.
 ///
 /// # Examples
 ///
@@ -436,8 +440,8 @@ impl Config {
 /// Mode for how JSON values should be compared.
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum CompareMode {
-    /// The two JSON values don't have to be exactly equal. The "expected" value is only required to
-    /// be "contained" inside "actual". See [crate documentation](index.html) for examples.
+    /// The two JSON values don't have to be exactly equal. The "expected" value is only required
+    /// to be "contained" inside "actual". See [crate documentation](index.html) for examples.
     ///
     /// The mode used with [`assert_json_include`].
     Inclusive,
