@@ -135,6 +135,27 @@
 //! ```text
 //! json atom at path ".a.b" is missing from lhs
 //! ```
+//! ## Custom message
+//!
+//! Like [`assert!`], the `assert_json` macros all have second forms, where a
+//! custom panic message can be provided. These messages are printed in
+//! addition to the default messages.
+//!
+//! ```rust
+//! use serde_json_assert::assert_json_eq;
+//! use serde_json::json;
+//!
+//! let lhs = json!({ "a": 1 });
+//! let rhs = json!({ "a": 1 });
+//!
+//! assert_json_eq!(
+//!     lhs,
+//!     rhs,
+//!     "We are testing {} and {} for equality",
+//!     "A",
+//!     "B"
+//! )
+//! ```
 //!
 //! ## Further customization
 //!
@@ -172,6 +193,11 @@ macro_rules! assert_json_contains {
             $crate::Config::new($crate::CompareMode::Inclusive).consider_array_sorting(false);
         $crate::assert_json_matches!($container, $contained, &config)
     }};
+    (container: $container:expr, contained: $contained:expr, $($arg:tt)+) => {{
+        let config =
+            $crate::Config::new($crate::CompareMode::Inclusive).consider_array_sorting(false);
+        $crate::assert_json_matches!($container, $contained, &config, $($arg)+)
+    }};
 }
 
 /// Compare two JSON values for an inclusive match.
@@ -189,6 +215,13 @@ macro_rules! assert_json_include {
     (expected: $expected:expr, actual: $actual:expr $(,)?) => {{
         $crate::assert_json_include!(actual: $actual, expected: $expected)
     }};
+    (actual: $actual:expr, expected: $expected:expr, $($arg:tt)+) => {{
+        let config = $crate::Config::new($crate::CompareMode::Inclusive);
+        $crate::assert_json_matches!($actual, $expected, &config, $($arg)+)
+    }};
+    (expected: $expected:expr, actual: $actual:expr, $($arg:tt)+) => {{
+        $crate::assert_json_include!(actual: $actual, expected: $expected, $($arg)+)
+    }};
 }
 
 /// Compare two JSON values for an exact match.
@@ -202,6 +235,10 @@ macro_rules! assert_json_eq {
     ($lhs:expr, $rhs:expr $(,)?) => {{
         let config = $crate::Config::new($crate::CompareMode::Strict);
         $crate::assert_json_matches!($lhs, $rhs, &config)
+    }};
+    ($lhs:expr, $rhs:expr, $($arg:tt)+) => {{
+        let config = $crate::Config::new($crate::CompareMode::Strict);
+        $crate::assert_json_matches!($lhs, $rhs, &config, $($arg)+)
     }};
 }
 
@@ -226,7 +263,20 @@ macro_rules! assert_json_eq {
 ///         "a": { "b": [1, 2.0, 3] },
 ///     }),
 ///     &config,
-/// )
+/// );
+///
+/// assert_json_matches!(
+///     json!({
+///         "a": { "b": [1, 2, 3.0] },
+///     }),
+///     json!({
+///         "a": { "b": [1, 2.0, 3] },
+///     }),
+///     &config,
+///     "Failed to assert equality between {} and {}",
+///     "lhs",
+///     "rhs"
+/// );
 /// ```
 ///
 /// When using `CompareMode::Inclusive` the first argument is `actual` and the second argument is
@@ -268,7 +318,12 @@ macro_rules! assert_json_eq {
 macro_rules! assert_json_matches {
     ($lhs:expr, $rhs:expr, $config:expr $(,)?) => {{
         if let Err(error) = $crate::assert_json_matches_no_panic(&$lhs, &$rhs, $config) {
-            panic!("\n\n{}\n\n", error);
+            panic!("\n{}", error);
+        }
+    }};
+    ($lhs:expr, $rhs:expr, $config:expr, $($arg:tt)+) => {{
+        if let Err(error) = $crate::assert_json_matches_no_panic(&$lhs, &$rhs, $config) {
+            panic!("\n{}\n\n{}", format_args!($($arg)+), error);
         }
     }};
 }

@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- All `json_assert` macros now have second forms, where a custom panic message
+  can be provided.
+
 ## [0.3.1] - 2025-06-08
 
 ### Fixed
